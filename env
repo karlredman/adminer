@@ -1,0 +1,4 @@
+RESTART=no
+SERVICE_NAME=adminer
+SERVICE_DOMAIN=scuar.lan
+DOCKER_NETWORK=scuar.dockernet
