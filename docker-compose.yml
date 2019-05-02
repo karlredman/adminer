@@ -3,7 +3,7 @@ version: '3.7'
 services:
   adminer:
     restart: "${RESTART}"
-    image: karl/adminer:latest
+    image: ${IMAGE}:latest
     container_name: ${SERVICE_NAME}
     # ports:
     # - "80:80"

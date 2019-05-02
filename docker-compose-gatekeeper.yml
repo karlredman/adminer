@@ -1,0 +1,40 @@
+version: '3.7'
+
+services:
+
+  keycloak-gatekeeper:
+      image: keycloak/keycloak-gatekeeper:5.0.0
+      restart: "${RESTART}"
+      labels:
+       - "traefik.enable=true"
+       - "traefik.port=3000"
+       - "traefik.frontend.rule=Host:${SERVICE_NAME}.${SERVICE_DOMAIN}"
+       - "traefik.protocol=http"
+      networks:
+        - traefik.bridge
+      volumes:
+        - ./keycloak-gatekeeper.conf:/etc/keycloak-gatekeeper.conf
+      entrypoint:
+        - /opt/keycloak-gatekeeper
+        - --config=/etc/keycloak-gatekeeper.conf
+
+  adminer:
+    restart: "${RESTART}"
+    image: ${IMAGE}:latest
+    container_name: ${SERVICE_NAME}
+    # ports:
+    # - "80:80"
+    # - "443:443"
+    volumes:
+      - ./etc/php5/php.ini:/etc/php5/php.ini
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=80"
+      - "traefik.frontend.rule=Host:${SERVICE_NAME}.${SERVICE_DOMAIN}"
+    networks:
+      - traefik.bridge
+
+networks:
+  traefik.bridge:
+    external:
+      name: "${DOCKER_NETWORK}"
